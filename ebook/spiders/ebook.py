@@ -6,5 +6,10 @@ class EbookScraper(scrapy.Spider):
 
     def parse(self, response):
         print("[PARSE]")  # Fixed typo in "PARSE"
-        print(response)
-        
+    
+        ebooks = reponse.css("article")
+        for ebook in ebooks:
+            title = ebook.css("a::text").get()
+            price = ebook.css("p.price_color").get()
+
+
