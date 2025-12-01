@@ -7,9 +7,6 @@ class EbookScraper(scrapy.Spider):
     def parse(self, response):
         print("[PARSE]")  # Fixed typo in "PARSE"
     
-        ebooks = response.css("article")
+        ebooks = response.css("article.product_pod")
         for ebook in ebooks:
-            title = ebook.css("a::text").get()
-            price = ebook.css("p.price_color::text").get()
-
-            print(f"Title : {title}, Price : {price}")
+            title = ebook.css("h3 a").attrib['title']
