@@ -1,5 +1,6 @@
 import scrapy
 from ebook.items import EbookItem
+from scrapy.loader import ItemLoader
 
 class EbookScraper(scrapy.Spider):
     name = "ebook"
@@ -11,11 +12,9 @@ class EbookScraper(scrapy.Spider):
         ebooks = response.css("article.product_pod")
 
         for ebook in ebooks:
-            Ebook_item = EbookItem()
-            Ebook_item['title'] = ebook.css("h3 a").attrib['title']
-            Ebook_item['price'] = ebook.css("p.price_color::text").get()
+            loader = ItemLoader(item=EbookItem())
+            loader.add_value('title', ebook.css("h3 a").attrib['title'])
+            loader.add_value('price',ebook.css("p.price_color::text") )
+        
 
-            yield Ebook_item
-
-                
-            
+            yield loader.load_item()  

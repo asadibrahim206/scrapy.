@@ -1,6 +1,6 @@
 
 from scrapy import Item,Field
-from itemloaders.processors import MapCompose,TakeFirst
+from itemloaders.processors import MapCompose, TakeFirst
 
 
 def get_number(txt):
@@ -8,10 +8,11 @@ def get_number(txt):
 
 class EbookItem(Item):
     # define the fields for your item here like:
-    title = Field()
+    title = Field(
+        TakeFirst()
+    )
     price = Field(
-
-        input_processor = MapCompose(get_number)
+        input_processor = MapCompose(get_number),
         output_processor = TakeFirst()
     )
    
