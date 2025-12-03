@@ -1,22 +1,7 @@
-import scrapy
-from ebook.items import EbookItem
-from scrapy.loader import ItemLoader
+from scrapy import Spider
 
-class EbookScraper(scrapy.Spider):
+def Ebook_Scraper(spider):
     name = "ebook"
-    start_urls = ["https://books.toscrape.com/catalogue/category/books/travel_2"]  # Fixed: start_urls not url
-
-    def parse(self, response):
-        print("[PARSE]")  # Fixed typo in "PARSE"
-    
-        ebooks = response.css("article.product_pod")
-
-        for ebook in ebooks:
-
-            loader = ItemLoader(item=EbookItem(),selector = ebook)
-
-            loader.add_css('title', "h3 a::attr(title)")
-            loader.add_css('price', "p.price_color::text") 
-        
-
-            yield loader.load_item()  
+    url = ["https://books.toscrape.com/"]
+    def parse(self,response):
+        print(response)
