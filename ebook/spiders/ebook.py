@@ -1,7 +1,10 @@
 from scrapy import Spider
 
-def Ebook_Scraper(spider):
-    name = "ebook"
+class Ebook_Scraper(Spider):
+    name = "ebooks"
     url = ["https://books.toscrape.com/"]
+
     def parse(self,response):
-        print(response)
+        print("[ PARSE ]")
+        ebook = response.css("h3 a::text")
+        print(ebook)
