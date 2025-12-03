@@ -1,13 +1,16 @@
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-
-
-# useful for handling different item types with a single interface
+from openpyxl import workbook
 from itemadapter import ItemAdapter
 
 
 class EbookPipeline:
+    def open_spider(self,Spider):
+        self.workbook = workbook()
+        self.sheet = self.workbook.active
+        self.sheet.title = "ebooks"
+        self.sheet.append(Spider.cols)
+        
     def process_item(self, item, spider):
-        return item
+        self.sheet.append([item['title'],item['price']])
+  
+    def close(self,Spider):
+        self.workbook.save("ebook.xlsx")

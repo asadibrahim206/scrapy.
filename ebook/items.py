@@ -1,12 +1,17 @@
 from scrapy import Item,Field
-from itemloaders.processors import MapCompose, TakeFirst
+from itemloaders.processors import MapCompose,TakeFirst
 
 
-def get_number(txt):
-    return float(txt.replace("$"," "))
+def change_currency(str):
+    return float(str.replace("£",""))
 
 class EbookItem(Item):
     # define the fields for your item here like:
-    title = Field()
-    price = Field() 
+    title = Field(
+         output_processor = TakeFirst()
+    )
+    price = Field(
+        input_processor = MapCompose(change_currency),
+        output_processor = TakeFirst()
+    ) 
    
