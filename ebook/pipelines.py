@@ -1,16 +1,25 @@
-from openpyxl import workbook
+from openpyxl import Workbook
 from itemadapter import ItemAdapter
 
-
 class EbookPipeline:
-    def open_spider(self,Spider):
-        self.workbook = workbook()
-        self.sheet = self.workbook.active
+
+    def open_spider(self, spider):
+        # Create workbook and get active sheet
+        self.workbook = Workbook()
+        self.sheet = self.workbook.active  # lowercase 'w'!
         self.sheet.title = "ebooks"
-        self.sheet.append(Spider.cols)
         
+        # Add headers (not spider.cols - that doesn't exist)
+        self.sheet.append(["Title", "Price"])  # Add your column headers here
+
     def process_item(self, item, spider):
-        self.sheet.append([item['title'],item['price']])
+        # Append item data to sheet
+        self.sheet.append([
+            item.get('title', ''),  # Use .get() for safety
+            item.get('price', '')
+        ])
+        return item
   
-    def close(self,Spider):
+    def close_spider(self, spider):  # lowercase 'spider' and correct method name
+        # Save the workbook
         self.workbook.save("ebook.xlsx")
