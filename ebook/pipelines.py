@@ -1,25 +1,21 @@
 from openpyxl import Workbook
 from itemadapter import ItemAdapter
+from pymongo import MongoClient
 
 class EbookPipeline:
 
     def open_spider(self, spider):
-        # Create workbook and get active sheet
-        self.workbook = Workbook()
-        self.sheet = self.workbook.active  # lowercase 'w'!
-        self.sheet.title = "ebooks"
-        
-        # Add headers (not spider.cols - that doesn't exist)
-        self.sheet.append(["Title", "Price"])  # Add your column headers here
-
+        self.client = MongoClient(
+        host="mongodb+srv://asadibrahim208:szabist12@scraping.igukdxu.mongodb.net/?appName=scraping",
+        connect = False
+        )
+        self.collection = self.client.get_database("ebooks").get_collection("travel")
+    
     def process_item(self, item, spider):
-        # Append item data to sheet
-        self.sheet.append([
-            item.get('title', ''),  # Use .get() for safety
-            item.get('price', '')
-        ])
+        self.collection.insert_one(
+            ItemAdapter(item).asdict()
+        )
         return item
   
-    def close_spider(self, spider):  # lowercase 'spider' and correct method name
-        # Save the workbook
-        self.workbook.save("ebook.xlsx")
+    def close_spider(self, spider): 
+        self.client.close()
