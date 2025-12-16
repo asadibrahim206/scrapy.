@@ -19,12 +19,12 @@ lis = [1,222,3,40,5,53]
 # new_list= lis.copy()
 # print("new list:", new_list)
 
-new_list = lis
-print("new list:", new_list)
+# new_list = lis
+# print("new list:", new_list)
 
-lis.append("i luv u")
-print(lis)
-print("new_list",new_list)
+# lis.append("i luv u")
+# print(lis)
+# print("new_list",new_list)
 # str = "a quick brown fox jump over a lazy dog"
 
 # for item in lis:
